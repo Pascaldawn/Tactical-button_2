@@ -1,0 +1,18 @@
+on:
+  push:
+    branches:
+      - staging
+
+jobs:
+  deploy:
+    name: Deploy to Staging
+    runs-on: [self-hosted, staging]
+    steps:
+      - name: Deploy Backend
+        run: |
+          echo "Deploying Backend..."
+          cd /var/www/backend-staging
+          git checkout staging
+          git pull origin staging
+          npm install
+          pm2 restart staging-backend
