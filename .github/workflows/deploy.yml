@@ -9,7 +9,7 @@ jobs:
     steps:
       - name: Deploy Backend
         run: |
-          echo "Deploying Backend..."
+          echo "Deploying Backend...."
           cd /var/www/backend-staging
           git checkout staging
           git pull origin staging
