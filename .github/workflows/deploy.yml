@@ -5,14 +5,17 @@ on:
 
 jobs:
   deploy:
-    name: Deploy to Backend Staging
+    name: Deploy to Staging
     runs-on: [self-hosted, backend-staging]
     steps:
       - name: Deploy Backend
+        shell: bash
         run: |
+          set -x
           echo "Deploying Backend..."
+          export PATH=$PATH:/home/github-runner/.nvm/versions/node/v22.17.0/bin
           cd /var/www/backend-staging
           git checkout staging
           git pull origin staging
-          npm install
+          timeout 300 npm install --verbose
           pm2 restart staging-backend
