@@ -5,7 +5,7 @@ on:
 
 jobs:
   deploy:
-    name: Deploy to Staging
+    name: Deploy to Backend Staging
     runs-on: [self-hosted, backend-staging]
     steps:
       - name: Deploy Backend
