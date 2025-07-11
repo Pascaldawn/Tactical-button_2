@@ -59,6 +59,9 @@ const loginUser = async (req, res) => {
         id: user._id,
         fullName: user.fullName,
         email: user.email,
+        subscriptionId: user.subscriptionId,
+        subscriptionProvider: user.subscriptionProvider,
+        subscriptionStatus: user.subscriptionStatus,
       },
     });
   } catch (error) {

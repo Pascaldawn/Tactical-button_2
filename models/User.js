@@ -20,6 +20,19 @@ const userSchema = new mongoose.Schema(
       required: true,
       minlength: 6,
     },
+    subscriptionStatus: {
+      type: String,
+      enum: ["active", "inactive", "cancelled", "expired"],
+      default: "inactive",
+    },
+    subscriptionProvider: {
+      type: String,
+      enum: ["stripe", "paystack"],
+      default: "stripe",
+    },
+    subscriptionId: {
+      type: String,
+    },
   },
   { timestamps: true }
 );
