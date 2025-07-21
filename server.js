@@ -14,7 +14,7 @@ app.get("/", (req, res) => {
   res.send("Nodejs tatical button app is started");
 });
 
-app.use("/api/auth", authRoutes);
+app.use("/api/v1/auth", authRoutes);
 
 app.listen(PORT, (req, res) => {
   try {
