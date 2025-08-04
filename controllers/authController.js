@@ -49,7 +49,7 @@ const loginUser = async (req, res) => {
 
 
     const token = jwt.sign(
-      { userId: user._id, email: user.email },
+      { _id: user._id, email: user.email },
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
     );
@@ -62,8 +62,9 @@ const loginUser = async (req, res) => {
         fullName: user.fullName,
         email: user.email,
         subscriptionId: user.subscriptionId,
-        subscriptionProvider: user.subscriptionProvider,
         subscriptionStatus: user.subscriptionStatus,
+        subscriptionPlan: user.subscriptionPlan,
+        subscriptionProductId: user.subscriptionProductId,
       },
     });
   } catch (error) {
@@ -72,4 +73,30 @@ const loginUser = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, loginUser };
+const getCurrentUser = async (req, res) => {
+  try {
+    const userId = req.user._id || req.user.id;
+    
+    const user = await User.findById(userId).select('-password');
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({
+      user: {
+        id: user._id,
+        fullName: user.fullName,
+        email: user.email,
+        subscriptionId: user.subscriptionId,
+        subscriptionStatus: user.subscriptionStatus,
+        subscriptionPlan: user.subscriptionPlan,
+        subscriptionProductId: user.subscriptionProductId,
+      },
+    });
+  } catch (error) {
+    console.log("Error getting current user:", error.message);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+module.exports = { registerUser, loginUser, getCurrentUser };

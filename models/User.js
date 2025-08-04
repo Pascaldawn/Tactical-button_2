@@ -25,12 +25,15 @@ const userSchema = new mongoose.Schema(
       enum: ["active", "inactive", "cancelled", "expired"],
       default: "inactive",
     },
-    subscriptionProvider: {
-      type: String,
-      enum: ["stripe", "paystack"],
-      default: "stripe",
-    },
     subscriptionId: {
+      type: String,
+    },
+    subscriptionPlan: {
+      type: String,
+      enum: ["basic", "pro"],
+      default: null,
+    },
+    subscriptionProductId: {
       type: String,
     },
   },
