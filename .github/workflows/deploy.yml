@@ -13,5 +13,5 @@ jobs:
           cd /var/www/backend-staging
           git checkout staging
           git pull origin staging
-          npm install
+          npm install --legacy-peer-deps
           pm2 restart staging-backend
