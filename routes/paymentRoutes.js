@@ -101,11 +101,12 @@ router.get('/portal', (req, res, next) => {
 
 // Helper function to determine plan from product ID
 const getPlanFromProductId = (productId) => {
+  const isProduction = process.env.NODE_ENV === 'production';
   const productIds = {
     basic: process.env.POLAR_BASIC_PRODUCT_ID || '34da0d93-2c29-496e-9162-2432e8c969ba',
     pro: process.env.POLAR_PRO_PRODUCT_ID || 'your_pro_product_id_here'
   };
-  
+
   // Find the plan by product ID
   let plan = null;
   for (const [planName, id] of Object.entries(productIds)) {
@@ -114,11 +115,11 @@ const getPlanFromProductId = (productId) => {
       break;
     }
   }
-  
-  console.log(`🔍 Environment: ${isProduction ? 'production' : 'sandbox'}`);
+
+  console.log(`🔍 Environment: ${isProduction ? 'production' : 'development/test'}`);
   console.log(`🔍 Product ID: ${productId} -> Plan: ${plan}`);
   console.log(`🔍 Available product IDs:`, productIds);
-  
+
   return plan;
 };
 
