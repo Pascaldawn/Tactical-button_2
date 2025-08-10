@@ -6,19 +6,10 @@ const verifyToken = require("../middlewares/authMiddleware");
 
 // Helper function to get product IDs based on environment
 const getProductIds = () => {
-  const isProduction = process.env.NODE_ENV === 'production';
-  
-  if (isProduction) {
-    return {
-      basic: process.env.POLAR_LIVE_BASIC_PRODUCT_ID || '80563e0c-7957-4a0e-8287-fb6c03621ff6',
-      pro: process.env.POLAR_LIVE_PRO_PRODUCT_ID || '59a5060f-8bb3-4a43-ad13-6d0f8ccd6ea1'
-    };
-  } else {
-    return {
-      basic: process.env.POLAR_SANDBOX_BASIC_PRODUCT_ID || '9e28204e-16fe-48ad-ad17-5f236b345f90', // $4.99 subscription
-      pro: process.env.POLAR_SANDBOX_PRO_PRODUCT_ID || '34da0d93-2c29-496e-9162-2432e8c969ba'  // $59.99/yearly subscription
-    };
-  }
+  return {
+    basic: process.env.POLAR_BASIC_PRODUCT_ID || '34da0d93-2c29-496e-9162-2432e8c969ba',
+    pro: process.env.POLAR_PRO_PRODUCT_ID || 'your_pro_product_id_here'
+  };
 };
 
 // Route to create checkout URL
@@ -54,23 +45,15 @@ router.post('/test-webhook', (req, res) => {
 
 // Environment check endpoint
 router.get('/env-check', (req, res) => {
-  const isProduction = process.env.NODE_ENV === 'production';
-  
   const config = {
     environment: process.env.NODE_ENV || 'development',
-    isProduction,
     productIds: {
-      basic: isProduction 
-        ? (process.env.POLAR_LIVE_BASIC_PRODUCT_ID || '80563e0c-7957-4a0e-8287-fb6c03621ff6')
-        : (process.env.POLAR_SANDBOX_BASIC_PRODUCT_ID || '9e28204e-16fe-48ad-ad17-5f236b345f90'), // $4.99 subscription
-      pro: isProduction
-        ? (process.env.POLAR_LIVE_PRO_PRODUCT_ID || '59a5060f-8bb3-4a43-ad13-6d0f8ccd6ea1')
-        : (process.env.POLAR_SANDBOX_PRO_PRODUCT_ID || '34da0d93-2c29-496e-9162-2432e8c969ba')  // $59.99/yearly subscription
+      basic: process.env.POLAR_BASIC_PRODUCT_ID || '34da0d93-2c29-496e-9162-2432e8c969ba',
+      pro: process.env.POLAR_PRO_PRODUCT_ID || 'your_pro_product_id_here'
     },
     polarAccessToken: process.env.POLAR_ACCESS_TOKEN ? 'Configured' : 'Missing',
     polarWebhookSecret: process.env.POLAR_WEBHOOK_SECRET ? 'Configured' : 'Missing'
   };
-  
   console.log('🔍 Environment check:', config);
   res.json(config);
 });
@@ -118,24 +101,10 @@ router.get('/portal', (req, res, next) => {
 
 // Helper function to determine plan from product ID
 const getPlanFromProductId = (productId) => {
-  const isProduction = process.env.NODE_ENV === 'production';
-  
-  // Get product IDs based on environment (same logic as controller)
-  const getProductIds = () => {
-    if (isProduction) {
-      return {
-        basic: process.env.POLAR_LIVE_BASIC_PRODUCT_ID || '80563e0c-7957-4a0e-8287-fb6c03621ff6',
-        pro: process.env.POLAR_LIVE_PRO_PRODUCT_ID || '59a5060f-8bb3-4a43-ad13-6d0f8ccd6ea1'
-      };
-    } else {
-      return {
-        basic: process.env.POLAR_SANDBOX_BASIC_PRODUCT_ID || '9e28204e-16fe-48ad-ad17-5f236b345f90', // $4.99 subscription
-        pro: process.env.POLAR_SANDBOX_PRO_PRODUCT_ID || '34da0d93-2c29-496e-9162-2432e8c969ba'  // $59.99/yearly subscription
-      };
-    }
+  const productIds = {
+    basic: process.env.POLAR_BASIC_PRODUCT_ID || '34da0d93-2c29-496e-9162-2432e8c969ba',
+    pro: process.env.POLAR_PRO_PRODUCT_ID || 'your_pro_product_id_here'
   };
-
-  const productIds = getProductIds();
   
   // Find the plan by product ID
   let plan = null;
